@@ -1,0 +1,147 @@
+
+Requisitos Funcionales
+-	Registrar jugador
+-	Iniciar juego
+-	Hacer jugada jugador
+-	Hacer jugada casa
+-	Finalizar juego
+Nombre	R1 - Registrar jugador
+Resumen	El sistema debe permitir registrar un jugador para poder iniciar un juego
+Entradas	-	Nombre del jugador
+Resultado	1.	El sistema muestra un mensaje dando la bienvenida al jugador
+2.	El sistema carga 100 fichas al jugador
+3.	El sistema le muestra el menú con la opción para iniciar un nuevo juego
+
+Pasos	Métodos	Responsable
+Registrar jugador	registrar_jugador(nombre)	Blackjack
+Crear jugador	__init__(nombre, fichas)	Jugador
+
+
+
+
+
+
+Nombre	R2 – Iniciar juego
+Resumen	El sistema permite iniciar un juego, repartiendo las cartas al jugador y la casa
+Entradas	-	Apuesta (cantidad de fichas)
+Resultado	1. El sistema recibe la apuesta del jugador
+2. Revolver las cartas
+3. El sistema reparte dos cartas destapadas al jugador
+4. El sistema reparte dos cartas a la casa, una destapada y la otra tapada
+5. El sistema verifica si la mano del jugador es blackjack
+5.1 Si tiene blackjack, se ejecuta el requisito R5 Finalizar juego
+5.2 Si no tiene blackjack, se ejecuta el requisito R3 Hacer jugada jugador
+
+Pasos	Métodos	Responsable
+Iniciar juego	Iniciar_juego(apuesta)	Blackjack
+Revolver las cartas	revolver()	Baraja
+Repartir carta	repartir_carta(tapada: bool) -> Carta	Baraja
+Iniciar la mano	inicializar_mano(cartas)	Casa, Jugador
+Crear mano	__init__(carta)	Mano
+Verificar si la mano es blackjack	es_blackjack() -> bool	Mano
+
+
+
+Nombre	R3 – Hacer jugada del jugador
+Resumen	El sistema debe permitir que el jugador realice una jugada durante su turno
+Entradas	-	Tipo de jugada (pedir carta o plantarse)
+Resultado	1. El sistema solicita al jugador que seleccione una jugada
+3. Si el jugador pide una carta
+3.1 El sistema le reparte una carta a la mano del jugador
+3.2 Si el valor de la mano del jugador es mayor a 21
+3.2.1 Se ejecuta el requisito R5 finalizar juego
+3.3 Si el valor de la mano no supera 21
+3.3.1 Se vuelve a ejecutar el requisito R3
+4. Si el jugador se planta
+4.1 Se calcular el valor de la mano, se muestra y se guarda
+4.2 Se ejecuta el requisito R4 hacer jugada de la casa
+
+Pasos	Métodos	Responsable
+Seleccionar jugar o plantarse	Seleccionar_jugada(apuesta)	Blackjack
+Pedir carta	repartir_carta(tapada: bool) -> Carta	Baraja
+Verificar valor de la mano	Valor_mano(mano)	Mano
+Plantarse 	Seleccionar_jugada(apuesta)	BlackJack
+
+
+
+
+
+
+
+Nombre	R4 – Hacer jugada de la casa
+Resumen	El sistema debe permitir que la casa realice una jugada durante su turno
+Entradas	Ninguna
+Resultado	1. Destapar la carta oculta de la casa
+2. Si la mano de la casa es blackjack
+2.1 Se ejecuta el requisito R5 finalizar juego (la casa gana)
+3. Si la mano de la casa no es blackjack
+3.1 Si la mano de la casa es menor o igual que 16 y menor que la mano del jugador
+3.1.1 Se reparte una carta a la mano de la casa
+3.1.2 Se calcula el valor de la mano se vuelve a evaluar (punto 3.1)
+3.2 Si la mano de la casa es mayor a 16 y menor o igual a 21
+3.2.1 Se ejecuta el requisito R5 Finalizar juego
+3.3 Si la mano de la casa se pasó de 21
+3.3.1 Se ejecuta el requisito R5 Finalizar juego
+
+
+
+
+Pasos	Métodos	Responsable
+Destapar  oculta 	destapar_carta(cartas)	Mano
+Verificar si es blackjack	es_blackjack() -> bool	Mano
+Verificar valor de la mano	valor_mano()	Mano
+Repartir carta	repartir_carta(tapada: bool) -> carta	Baraja
+Verificar valor de la mano	valor_mano()	Mano
+Plantarse 	seleccionar_jugada()	Blackjack
+
+
+
+
+
+
+
+
+
+
+
+
+
+Nombre	R5 – Finalizar juego
+Resumen	El sistema debe permitir que se finalice la partida y se determine el ganador
+Entradas	Ninguna
+Resultado	1. El sistema compara las manos del jugador y de la casa
+2. Si el jugador tiene blackjack, su mano es mayor que la mano de la casa o la mano de la casa superó 21
+2.1 El sistema anuncia el jugador como ganador
+2.2 Se doblan las fichas de la apuesta realizada
+3. Si la casa tiene blackjack, su mano es mayor que la mano del jugador o la mano del jugador superó 21
+3.1 El sistema anuncia que el jugador perdió
+3.3 Se restan las fichas de la apuesta de las fichas del jugador
+4. Si la mano del jugador y la mano de la casa tienen el mismo valor
+4.1 El sistema anuncia empate
+4.2 se devuelven las fichas apostadas al jugador
+5. Si el usuario tiene fichas disponibles
+5.1 Se presenta un menú con las opciones para iniciar un nuevo (R2) o salir de la aplicación
+6. Si usuario no tiene fichas disponibles
+6.1 Se termina la aplicación
+
+
+Pasos	Métodos	Responsable
+Comparar valor de las manos	comparar_manos()	Mano
+Anunciar ganador , perdedor o empate	ganador_perdedor_empate()	Blackjack
+Dar recompensa o quitar fichas	quitar_fichas_o_añadir(fichas)	Blackjack
+Si el jugador tiene fichas preguntar de nuevo si quiere jugar 	jugar_otra_vez()->bool:	Blackjack
+Si no tiene mas fichas, finalizar juego	finalizar_juego()	Blackjack
+
+
+
+Modelo del mundo
+-	Blackjack
+-	Jugador
+o	Fichas
+o	Nombre
+-	Carta
+o	Pinta
+o	Valor
+-	Casa
+-	Mano
+-	Baraja
